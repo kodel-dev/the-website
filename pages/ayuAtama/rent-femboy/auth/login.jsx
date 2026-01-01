@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { Mail, Lock, Loader2, ArrowLeft } from "lucide-react";
 
 const SignInSection = () => {
   const router = useRouter();
@@ -48,105 +50,111 @@ const SignInSection = () => {
   }
 
   return (
-    <section>
-      <div className="grid md:h-screen md:grid-cols-2">
-        {/* Left Component */}
-        <div className="flex flex-col items-center justify-center bg-white">
-          <div className="max-w-lg px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
-            <h2 className="mb-8 text-3xl font-bold md:mb-12 md:text-5xl">
-              Hahaha!!! You're One of Us!!!
-            </h2>
+    <section className="min-h-screen flex bg-gray-50 font-sans text-slate-800">
+      <div className="grid w-full md:grid-cols-2">
+        {/* Left Component: Form */}
+        <div className="flex flex-col justify-center items-center p-8 bg-white relative">
+          {/* Back Button */}
+          <Link 
+            href="/ayuAtama/rent-femboy" 
+            className="absolute top-8 left-8 text-gray-500 hover:text-blue-600 flex items-center gap-2 transition-colors text-sm font-medium"
+          >
+            <ArrowLeft size={18} /> Back to Home
+          </Link>
 
-            <form
-              onSubmit={handleSubmit}
-              className="mx-auto mb-4 max-w-sm pb-4"
-            >
-              {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+          <div className="w-full max-w-md space-y-8 mt-10 md:mt-0">
+            <div className="text-center">
+              <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                Welcome Back!
+              </h2>
+              <p className="mt-2 text-sm text-slate-500">
+                Please enter your details to sign in.
+              </p>
+            </div>
 
-              <div className="relative">
-                <img
-                  alt=""
-                  src="https://assets.website-files.com/6357722e2a5f19121d37f84d/6357722e2a5f190b7e37f878_EnvelopeSimple.svg"
-                  className="absolute bottom-0 left-[5%] top-[26%]"
-                />
-                <input
-                  type="email"
-                  className="mb-4 block h-9 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333]"
-                  placeholder="Email Address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+              {error && (
+                <div className="p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm rounded shadow-sm">
+                  {error}
+                </div>
+              )}
 
-              <div className="relative mb-4">
-                <img
-                  alt=""
-                  src="https://assets.website-files.com/6357722e2a5f19121d37f84d/6357722e2a5f19601037f879_Lock-2.svg"
-                  className="absolute bottom-0 left-[5%] top-[26%]"
-                />
-                <input
-                  type="password"
-                  className="mb-4 block h-9 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333]"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
+              <div className="space-y-5">
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                    <Mail size={20} />
+                  </div>
+                  <input
+                    type="email"
+                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none bg-gray-50 focus:bg-white sm:text-sm"
+                    placeholder="Email Address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                    <Lock size={20} />
+                  </div>
+                  <input
+                    type="password"
+                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none bg-gray-50 focus:bg-white sm:text-sm"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="flex w-full items-center justify-center bg-[#276ef1] px-8 py-4 font-semibold text-white transition disabled:opacity-60
-                  [box-shadow:rgb(171,_196,_245)_-8px_8px]
-                  hover:[box-shadow:rgb(171,_196,_245)_0px_0px]"
+                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-lg hover:shadow-blue-500/30 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                <span className="mr-6 font-bold">
-                  {loading ? "Logging in..." : "Grab your lil femboys~"}
-                </span>
-                <svg
-                  className="h-4 w-4 flex-none"
-                  fill="currentColor"
-                  viewBox="0 0 20 21"
-                >
-                  <polygon points="16.172 9 10.101 2.929 11.515 1.515 20 10 19.293 10.707 11.515 18.485 10.101 17.071 16.172 11 0 11 0 9" />
-                </svg>
+                {loading ? (
+                  <Loader2 className="animate-spin h-5 w-5" />
+                ) : (
+                  "Sign In"
+                )}
               </button>
             </form>
 
-            <p className="text-sm text-[#636262]">
-              Don't have an account yet?{" "}
-              <a href="register" className="font-bold text-black">
+            <p className="text-center text-sm text-gray-600 mt-4">
+              Don't have an account?{" "}
+              <Link href="register" className="font-bold text-blue-600 hover:text-blue-500 transition-colors hover:underline">
                 Register now
-              </a>
+              </Link>
             </p>
           </div>
         </div>
 
-        {/* Right Component */}
-        <div
-          className="relative flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/ayuAtama/pengering.png')" }}
-        >
-          <div className="absolute inset-0 bg-black/50" />
-
-          <div className="relative max-w-lg px-5 py-16 text-white md:px-10 md:py-24 lg:py-32">
-            <div className="mb-6 ml-2 flex h-14 w-14 items-center justify-center bg-[#276ef1] [box-shadow:rgb(171,_196,_245)_-8px_8px]">
-              <img
-                src="https://assets.website-files.com/6357722e2a5f19121d37f84d/6358f5ec37c8c32b17d1c725_Vector-9.svg"
-                alt=""
-                className="inline-block"
-              />
-            </div>
-            <p className="mb-8 text-white/90">
-              Missed the butterflies? Sign in and pick up where the flirting
-              left off, with charming companions ready to turn every moment into
-              something unforgettable.
+        {/* Right Component: Image with Overlay */}
+        <div className="hidden md:flex relative items-center justify-center bg-slate-900 overflow-hidden">
+          <img 
+             src="/ayuAtama/pengering.png" 
+             alt="Background" 
+             className="absolute inset-0 w-full h-full object-cover opacity-50 blur-[2px] scale-105"
+          />
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-slate-900/50" />
+          
+          <div className="relative z-10 max-w-lg px-10 text-center">
+            <h3 className="text-4xl font-bold text-white mb-6 drop-shadow-lg">
+              "You're One of Us!"
+            </h3>
+            <p className="text-gray-200 text-lg leading-relaxed drop-shadow-md">
+              Missed the butterflies? Sign in and pick up where the flirting left off. 
+              Charming companions are waiting.
             </p>
-
-            <p className="font-bold">Wahyu Pratama</p>
-            <p className="text-sm text-white/80">Astolfo Enjoyer Developer</p>
+            
+            <div className="mt-10 flex flex-col items-center">
+               <div className="w-16 h-1 bg-blue-500 rounded-full mb-4"></div>
+               <p className="font-bold text-white">Wahyu Pratama</p>
+               <p className="text-sm text-blue-300">Astolfo Enjoyer Developer</p>
+            </div>
           </div>
         </div>
       </div>

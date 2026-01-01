@@ -1,44 +1,73 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 const FOOTER_LINES = [
-  "Still here? That probably means the interface did its job a little too well. Don’t worry, we designed it this way—purely for usability reasons, of course.",
-  "You’re allowed to close the tab anytime. The fact that you haven’t is a strong indicator that the experience is functioning as intended.",
-  "No animations are running right now, and yet your attention is still locked in. We’ll log that as a successful interaction.",
-  "We optimized this page for speed, clarity, and comfort. Accidentally making it hard to leave was not in the spec, but here we are.",
-  "Everything on this page is working exactly as expected. Including the part where you tell yourself ‘just one more second.’",
-  "At this point, you’re no longer just browsing. You’re actively participating in the product design feedback loop.",
-  "There’s nothing hidden below this footer. Still, something tells us you’re not quite ready to scroll away yet.",
+  "Still here? That probably means the interface did its job a little too well.",
+  "You’re allowed to close the tab anytime. Or maybe not?",
+  "No animations are running right now, and yet your attention is still locked in.",
+  "We optimized this page for speed, clarity, and comfort.",
+  "Everything on this page is working exactly as expected.",
+  "At this point, you’re no longer just browsing. You’re actively participating.",
+  "There’s nothing hidden below this footer... except code.",
 ];
 
 function Footer() {
   const [footerIndex, setFooterIndex] = useState(0);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setFooterIndex((prev) => (prev + 1) % FOOTER_LINES.length);
-    }, 6000); // 6 seconds feels right for footer text
+    }, 6000); 
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <footer className="w-full bg-gradient-to-b from-[#1B004D] to-[#2E0A6F] text-white">
-      <div className="max-w-7xl mx-auto px-6 py-16 flex flex-col items-center">
-        <div className="flex items-center space-x-3 mb-6">
-          {/* <img
-            alt=""
-            className="h-11"
-            src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/dummyLogo/prebuiltuiLogoSquareShape.svg"
-          /> */}
-          <p className="h-11 text-3xl font-bold">Femboy Rental!</p>
+    <footer className="w-full bg-slate-900 text-white relative overflow-hidden font-sans border-t border-slate-800">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-indigo-600/20 blur-[100px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 py-16 flex flex-col items-center relative z-10">
+        
+        <div className="flex flex-col items-center gap-2 mb-8">
+          <h2 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+            FemRent
+          </h2>
+          <p className="text-slate-400 text-sm">Your reliable companion platform.</p>
         </div>
-        <footer className="mt-12 max-w-xl mx-auto text-center text-sm text-pink-500">
-          {FOOTER_LINES[footerIndex]}
-        </footer>
-      </div>
-      <div className="border-t border-[#3B1A7A]">
-        <div className="max-w-7xl mx-auto px-6 py-6 text-center text-sm font-normal">
-          <a href="https://wahyupratama.web.id">femrent</a> ©2025. All rights
-          reserved.
+
+        <div className="max-w-xl mx-auto text-center px-4 py-3 bg-slate-800/50 rounded-2xl border border-slate-700/50 backdrop-blur-sm mb-10">
+          <p className="text-sm text-indigo-300 italic transition-opacity duration-500 ease-in-out">
+            "{FOOTER_LINES[footerIndex]}"
+          </p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-6 mb-12 text-sm font-medium text-slate-300">
+          <Link href="/ayuAtama/rent-femboy" className="hover:text-white transition-colors">
+            Home
+          </Link>
+          <Link href="/ayuAtama/rent-femboy/discover" className="hover:text-white transition-colors">
+            Discover
+          </Link>
+          <Link href="/ayuAtama/rent-femboy/contact" className="hover:text-white transition-colors">
+            Contact
+          </Link>
+        </div>
+
+        <div className="w-full h-px bg-slate-800 mb-8" />
+
+        <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4 text-sm text-slate-500">
+          <p>
+            © {new Date().getFullYear()} <a href="https://wahyupratama.web.id" className="hover:text-indigo-400 transition-colors">FemRent</a>. All rights reserved.
+          </p>
+          
+          <Link 
+            href="/" 
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800 hover:bg-slate-700 hover:text-white transition-all group border border-slate-700"
+          >
+            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+            <span>Back to Main Website</span>
+          </Link>
         </div>
       </div>
     </footer>

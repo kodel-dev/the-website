@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { ArrowLeft, Menu, X, User, LogOut, Settings, LayoutDashboard } from "lucide-react";
 
 const Navbar = () => {
   const baseurl = process.env.NEXT_PUBLIC_FEM_RENT_URL;
@@ -8,7 +9,7 @@ const Navbar = () => {
   const navLinks = [
     { name: "Home", path: `${baseurl}` },
     { name: "Discover", path: `${baseurl}/discover` },
-    { name: "About", path: `${baseurl}/contact` },
+    { name: "Contact", path: `${baseurl}/contact` },
   ];
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -17,14 +18,12 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
-  // Scroll handling
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fetch logged-in user
   useEffect(() => {
     const fetchUser = () => {
       fetch(`${apiUrl}/me`, { credentials: "include" })
@@ -36,223 +35,204 @@ const Navbar = () => {
 
     fetchUser();
     window.addEventListener("auth-changed", fetchUser);
-
     return () => window.removeEventListener("auth-changed", fetchUser);
   }, [apiUrl]);
 
   async function handleLogout() {
     await fetch(`${apiUrl}/auth/logout`, { method: "POST" });
     setUser(null);
-    location.href = `${baseurl}/auth/login`;
+    window.location.href = `${baseurl}/auth/login`;
   }
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 font-sans ${
         isScrolled
-          ? "bg-white/80 shadow-md backdrop-blur-lg text-gray-700 py-3 md:py-4"
-          : "bg-indigo-500 text-white py-4 md:py-6"
+          ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 py-3"
+          : "bg-transparent py-5"
       }`}
     >
-      <div className="flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32">
-        {/* Brand */}
-        <Link
-          href="https://devevent.wahyupratama.web.id"
-          className="font-semibold text-lg"
-        >
-          FemRent
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        
+        <div className="flex items-center gap-4">
+          <Link 
+            href="/" 
+            className={`p-2 rounded-full transition-colors ${
+              isScrolled 
+                ? "hover:bg-gray-100 text-gray-600" 
+                : "bg-white/10 hover:bg-white/20 text-white"
+            }`}
+            title="Kembali ke Main Menu"
+          >
+            <ArrowLeft size={20} />
+          </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-6">
+          <Link
+            href={baseurl || "/"}
+            className={`text-xl font-bold tracking-tight ${
+              isScrolled ? "text-indigo-600" : "text-white"
+            }`}
+          >
+            FemRent<span className={`${isScrolled ? "text-gray-800" : "text-indigo-200"}`}>.</span>
+          </Link>
+        </div>
+
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.path} className="relative group">
+            <Link 
+              key={link.name} 
+              href={link.path} 
+              className={`text-sm font-medium transition-colors hover:text-indigo-400 ${
+                isScrolled ? "text-gray-600" : "text-gray-200"
+              }`}
+            >
               {link.name}
-              <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-current group-hover:w-full transition-all" />
             </Link>
           ))}
         </div>
 
-        {/* Desktop Right */}
         <div className="hidden md:flex items-center gap-4 relative">
-          {loadingUser && (
-            <div className="w-8 h-8 rounded-full bg-gray-300 animate-pulse" />
-          )}
-
-          {!loadingUser && !user && (
-            <Link
-              href={`${baseurl}/auth/login`}
-              className={`px-8 py-2.5 rounded-full transition ${
-                isScrolled ? "bg-black text-white" : "bg-white text-black"
-              }`}
-            >
-              Login
-            </Link>
-          )}
-
-          {!loadingUser && user && (
-            <>
+          {loadingUser ? (
+            <div className="w-9 h-9 rounded-full bg-gray-300 animate-pulse" />
+          ) : user ? (
+            <div className="relative">
               <button
-                onClick={() => setUserOpen((v) => !v)}
-                className="rounded-full overflow-hidden"
+                onClick={() => setUserOpen(!userOpen)}
+                className={`flex items-center gap-2 pl-1 pr-3 py-1 rounded-full border transition-all ${
+                  isScrolled 
+                    ? "border-gray-200 bg-white hover:border-indigo-300" 
+                    : "border-white/20 bg-white/10 text-white hover:bg-white/20"
+                }`}
               >
                 <img
-                  src={user.profile?.image || "/uploads/default-avatar.png"}
+                  src={user.profile?.image || `https://ui-avatars.com/api/?name=${user.email}&background=random`}
                   alt="Profile"
-                  className="w-9 h-9 rounded-full object-cover"
+                  className="w-8 h-8 rounded-full object-cover"
                 />
+                <span className="text-sm font-medium max-w-[100px] truncate">
+                  {user.profile?.displayName || user.profile?.nickname || "User"}
+                </span>
               </button>
 
               {userOpen && (
-                <div className="absolute right-0 top-12 w-48 bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden">
-                  <div className="px-4 py-3 border-b text-sm font-medium">
-                    {user.profile?.displayName ||
-                      user.profile?.nickname ||
-                      "User"}
+                <div className="absolute right-0 top-12 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="px-4 py-3 border-b border-gray-50">
+                    <p className="text-sm font-semibold text-gray-900 truncate">
+                       {user.profile?.displayName || "User"}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
                   </div>
 
-                  {/* <Link
-                    href={`${baseurl}/dashboard`}
-                    className="block px-4 py-2 text-sm hover:bg-gray-100"
-                  >
-                    Dashboard
-                  </Link> */}
+                  <div className="py-1">
+                    <Link href={`${baseurl}/settings`} className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
+                      <Settings size={16} className="mr-2" /> Settings
+                    </Link>
+                  </div>
 
-                  <Link
-                    href={`${baseurl}/settings`}
-                    className="block px-4 py-2 text-sm hover:bg-gray-100"
-                  >
-                    Settings
-                  </Link>
-
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                  >
-                    Sign out
-                  </button>
+                  <div className="border-t border-gray-50 mt-1 pt-1">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      <LogOut size={16} className="mr-2" /> Sign out
+                    </button>
+                  </div>
                 </div>
               )}
-            </>
-          )}
-        </div>
-
-        {/* Mobile Avatar */}
-        <div className="md:hidden flex items-center gap-2">
-          {loadingUser && (
-            <div className="w-8 h-8 rounded-full bg-gray-300 animate-pulse" />
-          )}
-
-          {!loadingUser && user && (
-            <button
-              onClick={() => {
-                setIsMenuOpen(false);
-                setUserOpen((v) => !v);
-              }}
-              className="rounded-full overflow-hidden"
-            >
-              <img
-                src={user.profile?.image || "/uploads/default-avatar.png"}
-                alt="Profile"
-                className="w-8 h-8 rounded-full object-cover"
-              />
-            </button>
-          )}
-
-          {!loadingUser && !user && (
+            </div>
+          ) : (
             <Link
               href={`${baseurl}/auth/login`}
-              className="text-sm font-medium"
+              className={`px-6 py-2 rounded-full text-sm font-semibold transition-all shadow-sm ${
+                isScrolled 
+                  ? "bg-indigo-600 text-white hover:bg-indigo-700" 
+                  : "bg-white text-indigo-600 hover:bg-gray-100"
+              }`}
             >
-              Login
+              Sign In
             </Link>
           )}
         </div>
 
-        {/* Hamburger */}
         <button
           onClick={() => setIsMenuOpen(true)}
-          className="md:hidden ml-2 text-xl"
+          className={`md:hidden p-2 rounded-md ${
+            isScrolled ? "text-gray-800" : "text-white"
+          }`}
         >
-          ☰
+          <Menu size={24} />
         </button>
       </div>
 
-      {/* Mobile Profile Menu */}
-      {userOpen && (
-        <div
-          className="
-            fixed inset-x-4 top-16 z-50
-            bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden
-            md:hidden
-          "
-        >
-          <div className="px-4 py-3 border-b text-sm font-medium">
-            {user?.profile?.displayName || user?.profile?.nickname || "User"}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-[60] bg-white flex flex-col md:hidden animate-in slide-in-from-right duration-300">
+          <div className="flex items-center justify-between p-4 border-b">
+             <span className="font-bold text-xl text-indigo-600">Menu</span>
+             <button onClick={() => setIsMenuOpen(false)} className="p-2 text-gray-500 hover:bg-gray-100 rounded-full">
+               <X size={24} />
+             </button>
           </div>
+          
+          <div className="flex-1 flex flex-col p-6 gap-6 overflow-y-auto">
+             <Link 
+               href="/"
+               className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-indigo-200 transition-colors"
+             >
+                <div className="bg-white p-2 rounded-full shadow-sm text-indigo-600">
+                   <ArrowLeft size={20} />
+                </div>
+                <div>
+                   <p className="font-semibold text-gray-900">Main Website</p>
+                   <p className="text-xs text-gray-500">Kembali ke halaman utama</p>
+                </div>
+             </Link>
 
-          {/* <Link
-            href={`${baseurl}/dashboard`}
-            onClick={() => setUserOpen(false)}
-            className="block px-4 py-2 text-sm hover:bg-gray-100"
-          >
-            Dashboard
-          </Link> */}
+             <div className="space-y-4">
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Navigation</p>
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.path}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block text-lg font-medium text-gray-800 hover:text-indigo-600"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+             </div>
 
-          <Link
-            href={`${baseurl}/settings`}
-            onClick={() => setUserOpen(false)}
-            className="block px-4 py-2 text-sm hover:bg-gray-100"
-          >
-            Settings
-          </Link>
-
-          <button
-            onClick={handleLogout}
-            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-          >
-            Sign out
-          </button>
+             <div className="mt-auto border-t pt-6">
+                {user ? (
+                   <div className="space-y-4">
+                      <div className="flex items-center gap-3 mb-4">
+                         <img 
+                           src={user.profile?.image || `https://ui-avatars.com/api/?name=${user.email}`} 
+                           className="w-10 h-10 rounded-full" 
+                         />
+                         <div>
+                            <p className="font-medium">{user.profile?.displayName || "User"}</p>
+                            <p className="text-xs text-gray-500">{user.email}</p>
+                         </div>
+                      </div>
+                      <Link href={`${baseurl}/settings`} className="block w-full py-3 text-center rounded-lg border border-gray-200 font-medium">
+                         Settings
+                      </Link>
+                      <button onClick={handleLogout} className="block w-full py-3 text-center rounded-lg bg-red-50 text-red-600 font-medium">
+                         Sign Out
+                      </button>
+                   </div>
+                ) : (
+                   <Link
+                    href={`${baseurl}/auth/login`}
+                    className="block w-full py-3 rounded-lg bg-indigo-600 text-white font-bold text-center shadow-lg"
+                   >
+                     Login / Register
+                   </Link>
+                )}
+             </div>
+          </div>
         </div>
       )}
-
-      {/* Mobile Nav Menu */}
-      <div
-        className={`fixed inset-0 bg-white text-gray-800 flex flex-col items-center justify-center gap-6
-        transition-transform duration-500 md:hidden
-        ${
-          isMenuOpen
-            ? "translate-x-0 pointer-events-auto"
-            : "-translate-x-full pointer-events-none"
-        }`}
-      >
-        <button
-          className="absolute top-4 right-4 text-xl"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          ✕
-        </button>
-
-        {navLinks.map((link) => (
-          <Link
-            key={link.name}
-            href={link.path}
-            onClick={() => setIsMenuOpen(false)}
-            className="text-lg"
-          >
-            {link.name}
-          </Link>
-        ))}
-
-        {!user && (
-          <Link
-            href={`${baseurl}/auth/login`}
-            className="bg-black text-white px-8 py-2.5 rounded-full"
-          >
-            Login
-          </Link>
-        )}
-      </div>
     </nav>
   );
 };
