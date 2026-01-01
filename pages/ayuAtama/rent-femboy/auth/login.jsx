@@ -24,7 +24,7 @@ const SignInSection = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", // REQUIRED for HttpOnly cookie
+        credentials: "include",
         body: JSON.stringify({
           email,
           password,
@@ -37,10 +37,8 @@ const SignInSection = () => {
         throw new Error(data.error || "Login failed");
       }
 
-      // notify navbar & listeners
       window.dispatchEvent(new Event("auth-changed"));
 
-      // redirect
       router.push(`${baseUrl}`);
     } catch (err) {
       setError(err.message);
@@ -52,9 +50,7 @@ const SignInSection = () => {
   return (
     <section className="min-h-screen flex bg-gray-50 font-sans text-slate-800">
       <div className="grid w-full md:grid-cols-2">
-        {/* Left Component: Form */}
         <div className="flex flex-col justify-center items-center p-8 bg-white relative">
-          {/* Back Button */}
           <Link 
             href="/ayuAtama/rent-femboy" 
             className="absolute top-8 left-8 text-gray-500 hover:text-blue-600 flex items-center gap-2 transition-colors text-sm font-medium"
@@ -131,14 +127,12 @@ const SignInSection = () => {
           </div>
         </div>
 
-        {/* Right Component: Image with Overlay */}
         <div className="hidden md:flex relative items-center justify-center bg-slate-900 overflow-hidden">
           <img 
              src="/ayuAtama/pengering.png" 
              alt="Background" 
              className="absolute inset-0 w-full h-full object-cover opacity-50 blur-[2px] scale-105"
           />
-          {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-slate-900/50" />
           
           <div className="relative z-10 max-w-lg px-10 text-center">
