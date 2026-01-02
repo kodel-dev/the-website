@@ -129,7 +129,7 @@ body::before {
   height: 10px;
   border-radius: 50%;
   background: radial-gradient(circle, #fff, currentColor 60%);
-  animation: explode 1.2s cubic-bezier(.22,.61,.36,1) forwards;
+  animation: explode 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   filter: drop-shadow(0 0 12px currentColor);
 }
 .particle.small {

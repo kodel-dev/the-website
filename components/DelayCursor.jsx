@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export default function DelayCursor({ delay = 0.12 }) {
+export default function DelayCursor({ delay = 0.8 }) {
   const cursorRef = useRef(null);
   const target = useRef({ x: 0, y: 0 });
   const ghost = useRef({ x: 0, y: 0 });
@@ -28,8 +28,7 @@ export default function DelayCursor({ delay = 0.12 }) {
         ghost.current.y = e.clientY;
 
         if (cursorRef.current) {
-          cursorRef.current.style.transform =
-            `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+          cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
         }
       }
     };
@@ -43,8 +42,7 @@ export default function DelayCursor({ delay = 0.12 }) {
         ghost.current.y += (target.current.y - ghost.current.y) * delay;
 
         if (cursorRef.current) {
-          cursorRef.current.style.transform =
-            `translate3d(${ghost.current.x}px, ${ghost.current.y}px, 0) translate(-50%, -50%)`;
+          cursorRef.current.style.transform = `translate3d(${ghost.current.x}px, ${ghost.current.y}px, 0) translate(-50%, -50%)`;
         }
       }
 

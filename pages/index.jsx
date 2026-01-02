@@ -5,11 +5,9 @@ import DelayCursor from "../components/DelayCursor";
 import AnimeCTAButton from "@components/ayuAtama/button";
 import FakeFemboyPopup from "@components/ayuAtama/fakePopup";
 import MovingPuzzleButton from "../components/MovingPuzzleButton";
-import Fireworks from "../components/Fireworks";
+import AICopilot from "@components/AICopilot/AICopilot";
 
 export default function Index() {
-  const [fireworksOn, setFireworksOn] = useState(false);
-
   function Visitor() {
     return (
       <div className="mt-24 mb-12 relative group max-w-xs mx-auto">
@@ -77,120 +75,18 @@ export default function Index() {
   return (
     <div className="min-h-[80vh] flex flex-col items-center">
       <FakeFemboyPopup />
-      <DelayCursor delay={0.01} />
-      
-      <div className="text-center mb-12 relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-10 w-full flex justify-center opacity-80">
-             <AnimatedMessage />
-        </div>
-        
-        <h2 className="text-5xl md:text-7xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 py-4 mt-20">
-          Selamat Datang!
-        </h2>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto mt-2">
-          Pusat eksperimen coding, game aneh, dan fitur absurd.
-          Silakan jelajahi kekacauan ini.
-        </p>
+      <AnimeCTAButton />
+      <MovingPuzzleButton />
 
-        <div className="flex justify-center gap-4 mt-8 flex-wrap">
-          <AnimeCTAButton />
-          <MovingPuzzleButton />
-          
-          <button
-            onClick={() => setFireworksOn((v) => !v)}
-            className={`px-6 py-3 rounded-full font-bold transition-all duration-300 flex items-center gap-2 shadow-lg border ${
-              fireworksOn 
-                ? "bg-green-500/20 border-green-500 text-green-400 hover:shadow-green-500/50" 
-                : "bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20"
-            }`}
-          >
-            <span>{fireworksOn ? "✨ MATIKAN EFEK" : "🚀 NYALAKAN EFEK"}</span>
-          </button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full px-4 mb-16">
-        
-        <MenuCard 
-          href="/home" 
-          title="MULAI" 
-          icon="🚀" 
-          colorClass="blue"
-          description="Halaman utama dashboard."
-        />
-
-        <MenuCard 
-          href="/nbrthx" 
-          title="SVGSTEGO" 
-          icon="🔐" 
-          colorClass="purple"
-          description="Sembunyikan pesan rahasia dalam SVG."
-        />
-
-        <MenuCard 
-          href="/kodel-dev" 
-          title="MUSTAHIL" 
-          icon="🤬" 
-          colorClass="orange"
-          description="Tombol yang tidak sopan."
-        />
-
-        <MenuCard 
-          href="/doom" 
-          title="DOOM" 
-          icon="💀" 
-          colorClass="red"
-          description="Mainkan game klasik DOOM di browser."
-        />
-
-        <MenuCard 
-          href="/vinrex/index.html" 
-          title="VINREX GAME" 
-          icon="🦖" 
-          colorClass="yellow"
-          description="Game dinosaurus offline Chrome."
-          isExternal={true}
-        />
-
-        <MenuCard 
-          href="/snekabsurd" 
-          title="Absurd Snek" 
-          icon="🐍" 
-          colorClass="green"
-          description="Game ular tapi aneh."
-        />
-
-        <MenuCard 
-          href="/bola-ajaib" 
-          title="Bola Ajaib" 
-          icon="🎱" 
-          colorClass="indigo"
-          description="Tanyakan nasibmu pada bola."
-        />
-
-        <MenuCard 
-          href="/gabut" 
-          title="Gabut Mode" 
-          icon="💤" 
-          colorClass="gray"
-          description="Tempat buang-buang waktu."
-        />
-
-        <MenuCard 
-          href="/guestbook" 
-          title="Guestbook" 
-          icon="📖" 
-          colorClass="pink"
-          description="Tuliskan jejak kunjunganmu."
-        />
-
-      </div>
-
-      <Fireworks enabled={fireworksOn} />
-      
+      <AnimatedMessage />
+      <DelayCursor />
       <Visitor />
-      
-      <div className="h-10"></div>
+      {/* <style jsx global>{`
+        * {
+          cursor: none !important;
+        }
+      `}</style> */}
+      <AICopilot />
     </div>
   );
 }

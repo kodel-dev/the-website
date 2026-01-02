@@ -14,11 +14,11 @@ export default function FakeFemboyPopup() {
 
   if (!open) return null;
 
-  /* CLOSE BUTTON: grow + shake, close after 5 clicks */
+  /* CLOSE BUTTON: grow + shake, close after 2 clicks */
   const handleClose = () => {
     setCloseCount((prev) => {
       const next = prev + 1;
-      if (next >= 5) {
+      if (next >= 2) {
         setOpen(false);
       }
       return next;
@@ -114,9 +114,9 @@ export default function FakeFemboyPopup() {
 
               {/* PRESSURE TEXT */}
               <div className="text-xs text-gray-400">
-                {closeCount > 0 && closeCount < 5
-                  ? `Almost closed… ${5 - closeCount} more click${
-                      5 - closeCount > 1 ? "s" : ""
+                {closeCount > 0 && closeCount < 2
+                  ? `Almost closed… ${2 - closeCount} more click${
+                      2 - closeCount > 1 ? "s" : ""
                     }`
                   : null}
               </div>

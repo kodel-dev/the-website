@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import Navbar from "@components/ayuAtama/navbar";
 import Footer from "@components/ayuAtama/footer";
+import { ThemeProvider } from "next-themes";
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -27,8 +28,15 @@ export default function MyApp({ Component, pageProps }) {
 
   // layout default
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </ThemeProvider>
   );
 }
